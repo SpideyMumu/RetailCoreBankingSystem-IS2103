@@ -11,6 +11,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
 /**
  *
@@ -36,7 +38,9 @@ public class AtmCard implements Serializable {
     @Column(length = 6, nullable = false)
     private String pin;
 
-    
+    @OneToOne
+    @JoinColumn(nullable = false)
+    private Customer customer;
     
     public Long getAtmCardId() {
         return atmCardId;
@@ -76,6 +80,14 @@ public class AtmCard implements Serializable {
 
     public void setPin(String pin) {
         this.pin = pin;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
     @Override

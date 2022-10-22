@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 /**
  *
@@ -42,6 +43,9 @@ public class Customer implements Serializable {
     
     @Column (length = 6, nullable = false)
     private String postalCode;
+    
+    @OneToOne
+    private AtmCard atmCard;
 
     public Customer() {
     }
@@ -55,9 +59,6 @@ public class Customer implements Serializable {
         this.addressLine2 = addressLine2;
         this.postalCode = postalCode;
     }
-
-    
-    
     
     public Long getCustomerId() {
         return customerId;
@@ -115,6 +116,22 @@ public class Customer implements Serializable {
         this.postalCode = postalCode;
     }
 
+    public String getIdentificationNumber() {
+        return identificationNumber;
+    }
+
+    public void setIdentificationNumber(String identificationNumber) {
+        this.identificationNumber = identificationNumber;
+    }
+
+    public AtmCard getAtmCard() {
+        return atmCard;
+    }
+
+    public void setAtmCard(AtmCard atmCard) {
+        this.atmCard = atmCard;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;
