@@ -8,6 +8,7 @@ package tellerterminalclient;
 import ejb.session.stateless.AtmCardSessionBeanRemote;
 import ejb.session.stateless.CustomerSessionBeanRemote;
 import ejb.session.stateless.EmployeeSessionBeanRemote;
+import entity.AtmCard;
 import entity.Customer;
 import java.util.Scanner;
 
@@ -116,7 +117,7 @@ public class MainApp {
             
             if (response.equalsIgnoreCase("Y")) {
                 //issue replacement here
-                issueReplacementAtmCard(customer);
+                issueReplacementAtmCard(customer, customer.getAtmCard());
             } else {
                 System.out.println("Exiting from Issue ATM....");
             }
@@ -124,18 +125,40 @@ public class MainApp {
     }
     
     private void issueNewAtmCard(Customer customer) {
+        Scanner sc = new Scanner(System.in);
         /*  1. Create new Atm Card
-            2. Associate new Atm Card to Customer
+            2. Associate new Atm Card to Customer and vice versa
             3. Merge entities to update DB
         */
+        System.out.println("Enter details of new card to proceed");
+        
+        System.out.print("Card Number: ");
+        String cardNumber = sc.nextLine();
+        
+        System.out.print("Name On Card: ");
+        String nameOnCard = sc.nextLine().trim();
+        
+        System.out.print("6-digits PIN: ");
+        String pin = sc.nextLine().trim();
+        
+        AtmCard newCard = new AtmCard(cardNumber, nameOnCard, pin, customer);
+        customer.setAtmCard(newCard);
+        
+        atmCardSB.createNewAtmCard(newCard);
+        customerSB.updateCustomer(customer);
     }
     
-    private void issueReplacementAtmCard(Customer customer) {
+    private void issueReplacementAtmCard(Customer customer, AtmCard currCard) {
         /*  1. Set current Atm Card as Disabled
             2. Disassociate current Atm Card
             3. Create new Atm Card
-            4. Associate new Atm Card to Customer
+            4. Associate Customer to new ATM Card and vice versa
             5. merge entities to update DB
         */
+
+        currCard.setEnabled(false);
+        currCard.setCustomer(null);
+        atmCardSB.updateAtmCard(currCard);
+        issueNewAtmCard(customer);
     }
 }

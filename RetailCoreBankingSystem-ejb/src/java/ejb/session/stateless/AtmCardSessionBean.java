@@ -40,4 +40,9 @@ public class AtmCardSessionBean implements AtmCardSessionBeanRemote, AtmCardSess
         em.merge(currCard);
     }
     
+    @Override
+    public void updateAtmCard(AtmCard card) {
+        em.merge(card);
+    }
+    
 }

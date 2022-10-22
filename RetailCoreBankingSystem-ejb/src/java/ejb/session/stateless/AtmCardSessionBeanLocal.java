@@ -19,4 +19,6 @@ public interface AtmCardSessionBeanLocal {
     
     public void changePin(String newPin, AtmCard currCard);
     
+    public void updateAtmCard(AtmCard card);
+    
 }

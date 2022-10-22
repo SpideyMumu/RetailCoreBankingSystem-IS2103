@@ -39,8 +39,18 @@ public class AtmCard implements Serializable {
     private String pin;
 
     @OneToOne
-    @JoinColumn(nullable = false)
     private Customer customer;
+
+    public AtmCard() {
+    }
+
+    public AtmCard(String cardNumber, String nameOnCard, String pin, Customer customer) {
+        this.cardNumber = cardNumber;
+        this.nameOnCard = nameOnCard;
+        this.enabled = true;
+        this.pin = pin;
+        this.customer = customer;
+    }
     
     public Long getAtmCardId() {
         return atmCardId;
