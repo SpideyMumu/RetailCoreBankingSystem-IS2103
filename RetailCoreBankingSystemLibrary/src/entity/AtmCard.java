@@ -26,7 +26,7 @@ public class AtmCard implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long atmCardId;
     
-    @Column(length = 16, nullable = false, unique = true)
+    @Column(length = 16, nullable = false)
     private String cardNumber;
     
     @Column(nullable = false)

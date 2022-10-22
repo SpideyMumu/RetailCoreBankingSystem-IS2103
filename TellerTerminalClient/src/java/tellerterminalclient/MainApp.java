@@ -103,6 +103,7 @@ public class MainApp {
         System.out.print("Enter Customer ID: "); //might need to change to retrieve by name or userName
         Long customerId = sc.nextLong();
         Customer customer = customerSB.retrieveCustomerbyId(customerId);
+        sc.nextLine();
         
         if (customer.getAtmCard() == null) {
             System.out.println("Customer selected does NOT have an ATM Card!");
@@ -131,20 +132,27 @@ public class MainApp {
             3. Merge entities to update DB
         */
         System.out.println("Enter details of new card to proceed");
+        AtmCard newCard = new AtmCard();
+        customer.setAtmCard(newCard);
+        newCard.setCustomer(customer);
+        newCard.setEnabled(true);
         
         System.out.print("Card Number: ");
-        String cardNumber = sc.nextLine();
+        String cardNumber = sc.nextLine().trim();
+        newCard.setCardNumber(cardNumber);
         
         System.out.print("Name On Card: ");
         String nameOnCard = sc.nextLine().trim();
+        newCard.setNameOnCard(nameOnCard);
         
         System.out.print("6-digits PIN: ");
         String pin = sc.nextLine().trim();
+        newCard.setPin(pin);
         
-        AtmCard newCard = new AtmCard(cardNumber, nameOnCard, pin, customer);
-        customer.setAtmCard(newCard);
+//        customer.setAtmCard(newCard);
+//        newCard.setCustomer(customer);
         
-        atmCardSB.createNewAtmCard(newCard);
+        //atmCardSB.createNewAtmCard(newCard);
         customerSB.updateCustomer(customer);
     }
     
