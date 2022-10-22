@@ -18,4 +18,9 @@ public interface CustomerSessionBeanRemote {
     public Long createNewCustomer(Customer customer);
     
     //public void changePin(String newPin);
+
+    public Customer retrieveCustomerbyId(Long id);
+    
+    public void updateCustomer(Customer customer);
+    
 }

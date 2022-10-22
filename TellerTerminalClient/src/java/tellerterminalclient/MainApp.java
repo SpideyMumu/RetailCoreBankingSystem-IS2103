@@ -90,7 +90,52 @@ public class MainApp {
         System.out.println("New Customer created successfully!: " + newCustomerId + "\n");
     }
     
-    private void openDepositAccTerminal() {}
+    private void openDepositAccTerminal() {
     
-    private void issueAtmCardTerminal() {}
+    }
+    
+    private void issueAtmCardTerminal() {
+        Scanner sc = new Scanner(System.in);
+        
+        System.out.println("*** Teller Terminal :: Issue ATM Card ***\n");
+        System.out.println("To issue ATM Card, a customer must be selected.");
+        System.out.print("Enter Customer ID: "); //might need to change to retrieve by name or userName
+        Long customerId = sc.nextLong();
+        Customer customer = customerSB.retrieveCustomerbyId(customerId);
+        
+        if (customer.getAtmCard() == null) {
+            System.out.println("Customer selected does NOT have an ATM Card!");
+            System.out.println("Press any button to proceed to issue a new ATM Card...");
+            sc.nextLine();
+            //issue new card here
+            issueNewAtmCard(customer);
+        } else {
+            System.out.println("Customer selected already has an ATM Card!");
+            System.out.println("Would you like to issue a replacement? Y/N");
+            String response = sc.nextLine();
+            
+            if (response.equalsIgnoreCase("Y")) {
+                //issue replacement here
+                issueReplacementAtmCard(customer);
+            } else {
+                System.out.println("Exiting from Issue ATM....");
+            }
+        }    
+    }
+    
+    private void issueNewAtmCard(Customer customer) {
+        /*  1. Create new Atm Card
+            2. Associate new Atm Card to Customer
+            3. Merge entities to update DB
+        */
+    }
+    
+    private void issueReplacementAtmCard(Customer customer) {
+        /*  1. Set current Atm Card as Disabled
+            2. Disassociate current Atm Card
+            3. Create new Atm Card
+            4. Associate new Atm Card to Customer
+            5. merge entities to update DB
+        */
+    }
 }

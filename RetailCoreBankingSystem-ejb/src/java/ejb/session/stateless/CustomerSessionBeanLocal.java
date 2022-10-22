@@ -17,4 +17,8 @@ public interface CustomerSessionBeanLocal {
     
     public Long createNewCustomer(Customer customer);
     
+    public Customer retrieveCustomerbyId(Long id);
+
+    public void updateCustomer(Customer customer);
+    
 }

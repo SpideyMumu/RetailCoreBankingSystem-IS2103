@@ -27,12 +27,17 @@ public class CustomerSessionBean implements CustomerSessionBeanRemote, CustomerS
         
         return customer.getCustomerId();
     }
-
-//    @Override
-//    public void changePin(String newPin) {
-//        
-//    }
     
+    @Override
+    public Customer retrieveCustomerbyId(Long id) {
+        Customer customer = em.find(Customer.class, id);
+        return customer;
+        //Have to implement exception error if customer does not exist
+    }
     
+    @Override
+    public void updateCustomer(Customer customer) {
+        em.merge(customer);
+    }
     
 }
