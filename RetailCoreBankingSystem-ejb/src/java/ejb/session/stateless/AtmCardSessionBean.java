@@ -33,7 +33,7 @@ public class AtmCardSessionBean implements AtmCardSessionBeanRemote, AtmCardSess
     }
     
     //retrieve Atm card method to be implemented
-    //public AtmCard retrieveAtmCard(String)
+    //public AtmCard retrieveAtmCardByCardNumber(String)
 
     @Override
     public void changePin(String newPin, AtmCard currCard) {
@@ -47,11 +47,15 @@ public class AtmCardSessionBean implements AtmCardSessionBeanRemote, AtmCardSess
     }
     
     @Override
-    public AtmCard retrieveAtmCard(String cardNum) {
+    public AtmCard retrieveAtmCardByCardNumber(String cardNum) {
         Query query = em.createQuery("SELECT c FROM AtmCard c WHERE c.cardNumber = :currCardNum");
         query.setParameter("currCardNum", cardNum);
         
         return (AtmCard) query.getSingleResult(); //implement try and catch exception here
+    }
+    
+    public AtmCard retrieveAtmCardByCardId(Long cardId) {
+        return em.find(AtmCard.class, cardId);
     }
     
 }
