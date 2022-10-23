@@ -20,5 +20,7 @@ public interface AtmCardSessionBeanRemote {
     public void changePin(String newPin, AtmCard currCard);
 
     public void updateAtmCard(AtmCard card);
+
+    public AtmCard retrieveAtmCard(String cardNum);
     
 }

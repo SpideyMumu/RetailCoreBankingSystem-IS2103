@@ -5,7 +5,8 @@
  */
 package ejb.session.stateless;
 
-import entity.AtmCard;
+import entity.DepositAccount;
+import java.math.BigDecimal;
 import javax.ejb.Local;
 
 /**
@@ -13,14 +14,12 @@ import javax.ejb.Local;
  * @author muhdm
  */
 @Local
-public interface AtmCardSessionBeanLocal {
+public interface DepositAccountSessionBeanLocal {
     
-    public Long createNewAtmCard(AtmCard newCard);
+    public Long createNewDepositAccount(DepositAccount acc);
     
-    public void changePin(String newPin, AtmCard currCard);
+    public BigDecimal retrieveAvailableBalance(Long accId);
     
-    public void updateAtmCard(AtmCard card);
-    
-    public AtmCard retrieveAtmCard(String cardNum);
+    public void updateDepositAccount(DepositAccount acc);
     
 }

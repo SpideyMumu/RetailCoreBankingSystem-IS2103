@@ -9,6 +9,7 @@ import entity.AtmCard;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -43,6 +44,14 @@ public class AtmCardSessionBean implements AtmCardSessionBeanRemote, AtmCardSess
     @Override
     public void updateAtmCard(AtmCard card) {
         em.merge(card);
+    }
+    
+    @Override
+    public AtmCard retrieveAtmCard(String cardNum) {
+        Query query = em.createQuery("SELECT c FROM AtmCard c WHERE c.cardNumber = :currCardNum");
+        query.setParameter("currCardNum", cardNum);
+        
+        return (AtmCard) query.getSingleResult(); //implement try and catch exception here
     }
     
 }
