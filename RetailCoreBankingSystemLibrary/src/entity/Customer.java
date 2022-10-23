@@ -6,6 +6,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -53,6 +54,7 @@ public class Customer implements Serializable {
     private List<DepositAccount> accounts;
 
     public Customer() {
+        this.accounts = new ArrayList<DepositAccount>();
     }
 
     public Customer(String firstName, String lastName, String identificationNumber, String contactNumber, String addressLine1, String addressLine2, String postalCode) {

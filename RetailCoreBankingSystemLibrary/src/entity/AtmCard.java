@@ -6,6 +6,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -48,6 +49,7 @@ public class AtmCard implements Serializable {
     private List<DepositAccount> accounts;
 
     public AtmCard() {
+        this.accounts = new ArrayList<DepositAccount>();
     }
 
     public AtmCard(String cardNumber, String nameOnCard, String pin, Customer customer) {
