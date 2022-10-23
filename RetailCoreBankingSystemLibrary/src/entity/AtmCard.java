@@ -6,12 +6,14 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 /**
@@ -40,6 +42,10 @@ public class AtmCard implements Serializable {
 
     @OneToOne
     private Customer customer;
+    
+    @OneToMany
+    @JoinColumn (nullable = false)
+    private List<DepositAccount> accounts;
 
     public AtmCard() {
     }
@@ -98,6 +104,14 @@ public class AtmCard implements Serializable {
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
+    }
+
+    public List<DepositAccount> getAccounts() {
+        return accounts;
+    }
+
+    public void setAccounts(List<DepositAccount> accounts) {
+        this.accounts = accounts;
     }
 
     @Override

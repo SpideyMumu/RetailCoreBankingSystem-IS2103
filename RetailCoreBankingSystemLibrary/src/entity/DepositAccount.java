@@ -14,6 +14,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import util.enumeration.DepositAccountType;
 
 /**
@@ -40,13 +42,87 @@ public class DepositAccount implements Serializable {
     
     @Column(nullable = false)
     private boolean enabled;
+    
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    private Customer customer;
+    
+    @ManyToOne
+    private AtmCard atmCard;
 
+    public DepositAccount() {
+    }
+    
     public Long getDepositAccountId() {
         return depositAccountId;
     }
 
     public void setDepositAccountId(Long depositAccountId) {
         this.depositAccountId = depositAccountId;
+    }
+
+    public String getAccountNumber() {
+        return accountNumber;
+    }
+
+    public void setAccountNumber(String accountNumber) {
+        this.accountNumber = accountNumber;
+    }
+
+    public DepositAccountType getAccountType() {
+        return accountType;
+    }
+
+    public void setAccountType(DepositAccountType accountType) {
+        this.accountType = accountType;
+    }
+
+    public BigDecimal getAvailableBalance() {
+        return availableBalance;
+    }
+
+    public void setAvailableBalance(BigDecimal availableBalance) {
+        this.availableBalance = availableBalance;
+    }
+
+    public BigDecimal getHoldBalance() {
+        return holdBalance;
+    }
+
+    public void setHoldBalance(BigDecimal holdBalance) {
+        this.holdBalance = holdBalance;
+    }
+
+    public BigDecimal getLedgerBalance() {
+        return ledgerBalance;
+    }
+
+    public void setLedgerBalance(BigDecimal ledgerBalance) {
+        this.ledgerBalance = ledgerBalance;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    public AtmCard getAtmCard() {
+        return atmCard;
+    }
+
+    public void setAtmCard(AtmCard atmCard) {
+        this.atmCard = atmCard;
     }
 
     @Override

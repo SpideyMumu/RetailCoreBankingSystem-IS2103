@@ -6,11 +6,13 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 /**
@@ -46,6 +48,9 @@ public class Customer implements Serializable {
     
     @OneToOne
     private AtmCard atmCard;
+    
+    @OneToMany
+    private List<DepositAccount> accounts;
 
     public Customer() {
     }
@@ -131,7 +136,15 @@ public class Customer implements Serializable {
     public void setAtmCard(AtmCard atmCard) {
         this.atmCard = atmCard;
     }
-    
+
+    public List<DepositAccount> getAccounts() {
+        return accounts;
+    }
+
+    public void setAccounts(List<DepositAccount> accounts) {
+        this.accounts = accounts;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
