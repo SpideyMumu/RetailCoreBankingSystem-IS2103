@@ -169,7 +169,7 @@ public class MainApp {
             sc.nextLine();
             //issue new card here
             issueNewAtmCard(customer);
-        } else if (customer.getAccounts().isEmpty()){ //When customer does not have deposit account
+        } else if (depositAccountSB.retrieveAllDepositAccount(customer).isEmpty()){ //When customer does not have deposit account
             System.out.println("Customer selected does NOT have a deposit account!");
             System.out.println("In order to issue an ATM Card, one must have at least one deposit account.");
             System.out.println("Please inform the customer you are serving to create an account first.");
@@ -197,7 +197,7 @@ public class MainApp {
         
         System.out.println("Enter details of new card to proceed");
         AtmCard newCard = new AtmCard();
-        customer.setAtmCard(newCard);
+        //customer.setAtmCard(newCard);
         newCard.setCustomer(customer);
         newCard.setEnabled(true);
         
@@ -213,6 +213,11 @@ public class MainApp {
         String pin = sc.nextLine().trim();
         newCard.setPin(pin);
         
+        //Persiting ATM card and Associating ATM card to customer
+        Long atmCardId = atmCardSB.createNewAtmCard(newCard);
+        AtmCard currCard = atmCardSB.retrieveAtmCardByCardId(atmCardId);
+        customer.setAtmCard(currCard);
+        customerSB.updateCustomer(customer);
         /*
         Add deposit accounts
         */
@@ -226,12 +231,12 @@ public class MainApp {
             if (sc.nextLine().equalsIgnoreCase("y")) {
                 //add to new list
                 //newListForAtmCard.add(acc);
-                acc.setAtmCard(newCard);
+                acc.setAtmCard(currCard);
                 depositAccountSB.updateDepositAccount(acc);
             }
         }
         //newCard.setAccounts(newListForAtmCard);
-        customerSB.updateCustomer(customer);
+        //customerSB.updateCustomer(customer);
         System.out.println("Successfully Issued ATM Card!");
     }
     
