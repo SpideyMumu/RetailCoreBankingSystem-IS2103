@@ -244,7 +244,7 @@ public class MainApp {
         */
 
         currCard.setEnabled(false);
-        currCard.setCustomer(null);
+        //currCard.setCustomer(null);
         atmCardSB.updateAtmCard(currCard);
         System.out.println("Successfully disabled previous ATM Card!");
         issueNewAtmCard(customer);
