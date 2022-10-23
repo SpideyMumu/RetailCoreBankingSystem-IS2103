@@ -5,8 +5,10 @@
  */
 package ejb.session.stateless;
 
+import entity.Customer;
 import entity.DepositAccount;
 import java.math.BigDecimal;
+import java.util.List;
 import javax.ejb.Remote;
 
 /**
@@ -21,5 +23,7 @@ public interface DepositAccountSessionBeanRemote {
     public BigDecimal retrieveAvailableBalance(Long accId);
 
     public void updateDepositAccount(DepositAccount acc);
+
+    public List<DepositAccount> retrieveAllDepositAccount(Customer customer);
     
 }

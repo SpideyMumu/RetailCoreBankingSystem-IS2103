@@ -35,6 +35,8 @@ public class CustomerSessionBean implements CustomerSessionBeanRemote, CustomerS
         //Have to implement exception error if customer does not exist
     }
     
+    
+    
     @Override
     public void updateCustomer(Customer customer) {
         em.merge(customer);

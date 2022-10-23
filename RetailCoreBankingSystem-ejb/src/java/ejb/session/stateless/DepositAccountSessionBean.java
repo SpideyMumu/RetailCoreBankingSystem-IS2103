@@ -5,11 +5,14 @@
  */
 package ejb.session.stateless;
 
+import entity.Customer;
 import entity.DepositAccount;
 import java.math.BigDecimal;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -33,6 +36,14 @@ public class DepositAccountSessionBean implements DepositAccountSessionBeanRemot
     public BigDecimal retrieveAvailableBalance (Long accId) {
         DepositAccount acc = em.find(DepositAccount.class, accId);
         return acc.getAvailableBalance();
+    }
+    
+    @Override
+    public List<DepositAccount> retrieveAllDepositAccount(Customer customer) {
+        Query query = em.createQuery("SELECT d FROM DepositAccount d WHERE d.customer = :currCustomer");
+        query.setParameter("currCustomer", customer);
+        
+        return query.getResultList();
     }
     
     @Override

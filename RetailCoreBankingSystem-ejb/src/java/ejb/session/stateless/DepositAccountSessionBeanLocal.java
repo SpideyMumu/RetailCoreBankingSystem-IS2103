@@ -5,8 +5,10 @@
  */
 package ejb.session.stateless;
 
+import entity.Customer;
 import entity.DepositAccount;
 import java.math.BigDecimal;
+import java.util.List;
 import javax.ejb.Local;
 
 /**
@@ -21,5 +23,8 @@ public interface DepositAccountSessionBeanLocal {
     public BigDecimal retrieveAvailableBalance(Long accId);
     
     public void updateDepositAccount(DepositAccount acc);
+    
+    public List<DepositAccount> retrieveAllDepositAccount(Customer customer);
+    
     
 }
