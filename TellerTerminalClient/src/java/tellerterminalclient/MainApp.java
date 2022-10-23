@@ -114,6 +114,7 @@ public class MainApp {
         System.out.print("Enter Customer ID: "); //might need to change to retrieve by name or userName
         Long customerId = sc.nextLong();
         Customer customer = customerSB.retrieveCustomerbyId(customerId);
+        //List<DepositAccount> currListOfAccounts = depositAccountSB.retrieveAllDepositAccount(customerId);
         sc.nextLine();
         
         System.out.println("Enter details of new account to proceed");
@@ -122,9 +123,10 @@ public class MainApp {
         //Association
         
         //does not work as fetch type is lazy
-        List<DepositAccount> updatedList = customer.getAccounts();
-        updatedList.add(newAccount);
-        customer.setAccounts(updatedList);
+        //customer.getAccounts().size();
+//        List<DepositAccount> updatedList = customer.getAccounts();
+//        updatedList.add(newAccount);
+//        customer.setAccounts(updatedList);
         newAccount.setCustomer(customer);
         
         //Set Account Details
@@ -140,9 +142,11 @@ public class MainApp {
         newAccount.setAvailableBalance(amount);
         newAccount.setHoldBalance(BigDecimal.ZERO);
         newAccount.setLedgerBalance(amount);
+        depositAccountSB.createNewDepositAccount(newAccount);
+        //customerSB.updateCustomer(customer);
         sc.nextLine();
         
-        System.out.print("Kindly collect cash from Customer for deposit.");
+        System.out.println("Kindly collect cash from Customer for deposit.");
         System.out.print("Press any button to proceed...");
         sc.nextLine();
     }
@@ -213,19 +217,20 @@ public class MainApp {
         Add deposit accounts
         */
         
-        List<DepositAccount> newListForAtmCard = new ArrayList<DepositAccount>();
+        //List<DepositAccount> newListForAtmCard = new ArrayList<DepositAccount>();
+        List<DepositAccount> currDepositAccounts = depositAccountSB.retrieveAllDepositAccount(customer);
         System.out.println("Select Deposit Account(s) you would like to associate with the new ATM Card: ");
-        for (DepositAccount acc: customer.getAccounts()) {
+        for (DepositAccount acc: currDepositAccounts) {
             System.out.println("Account is a " + acc.getAccountType().name() + " account. Account Number: " + acc.getAccountNumber());
             System.out.println("Would you like to link this Account? Y/N");
             if (sc.nextLine().equalsIgnoreCase("y")) {
                 //add to new list
-                newListForAtmCard.add(acc);
+                //newListForAtmCard.add(acc);
                 acc.setAtmCard(newCard);
                 depositAccountSB.updateDepositAccount(acc);
             }
         }
-        newCard.setAccounts(newListForAtmCard);
+        //newCard.setAccounts(newListForAtmCard);
         customerSB.updateCustomer(customer);
         System.out.println("Successfully Issued ATM Card!");
     }
