@@ -44,10 +44,11 @@ public class DepositAccount implements Serializable {
     private boolean enabled;
     
     @ManyToOne
-    @JoinColumn(nullable = false)
+    @JoinColumn(nullable = false, name = "customerId")
     private Customer customer;
     
     @ManyToOne
+    @JoinColumn(name = "atmCardId")
     private AtmCard atmCard;
 
     public DepositAccount() {

@@ -13,6 +13,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -48,24 +49,25 @@ public class Customer implements Serializable {
     private String postalCode;
     
     @OneToOne
+    @JoinColumn(name = "atmCardId")
     private AtmCard atmCard;
     
-    @OneToMany
+    @OneToMany(mappedBy = "customer")
     private List<DepositAccount> accounts;
 
     public Customer() {
         this.accounts = new ArrayList<DepositAccount>();
     }
 
-    public Customer(String firstName, String lastName, String identificationNumber, String contactNumber, String addressLine1, String addressLine2, String postalCode) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.identificationNumber = identificationNumber;
-        this.contactNumber = contactNumber;
-        this.addressLine1 = addressLine1;
-        this.addressLine2 = addressLine2;
-        this.postalCode = postalCode;
-    }
+//    public Customer(String firstName, String lastName, String identificationNumber, String contactNumber, String addressLine1, String addressLine2, String postalCode) {
+//        this.firstName = firstName;
+//        this.lastName = lastName;
+//        this.identificationNumber = identificationNumber;
+//        this.contactNumber = contactNumber;
+//        this.addressLine1 = addressLine1;
+//        this.addressLine2 = addressLine2;
+//        this.postalCode = postalCode;
+//    }
     
     public Long getCustomerId() {
         return customerId;
