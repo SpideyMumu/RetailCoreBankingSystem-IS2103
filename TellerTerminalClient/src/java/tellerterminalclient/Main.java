@@ -7,6 +7,7 @@ package tellerterminalclient;
 
 import ejb.session.stateless.AtmCardSessionBeanRemote;
 import ejb.session.stateless.CustomerSessionBeanRemote;
+import ejb.session.stateless.DepositAccountSessionBeanRemote;
 import ejb.session.stateless.EmployeeSessionBeanRemote;
 import javax.ejb.EJB;
 
@@ -15,6 +16,9 @@ import javax.ejb.EJB;
  * @author muhdm
  */
 public class Main {
+
+    @EJB
+    private static DepositAccountSessionBeanRemote depositAccountSessionBean;
 
     @EJB
     private static EmployeeSessionBeanRemote employeeSessionBean;
@@ -31,7 +35,7 @@ public class Main {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        MainApp mainApp = new MainApp(atmCardSessionBean, customerSessionBean, employeeSessionBean);
+        MainApp mainApp = new MainApp(atmCardSessionBean, customerSessionBean, employeeSessionBean, depositAccountSessionBean);
         mainApp.runApp();
     }
     

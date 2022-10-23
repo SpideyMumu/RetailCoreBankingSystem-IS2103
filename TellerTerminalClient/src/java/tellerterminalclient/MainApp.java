@@ -7,10 +7,16 @@ package tellerterminalclient;
 
 import ejb.session.stateless.AtmCardSessionBeanRemote;
 import ejb.session.stateless.CustomerSessionBeanRemote;
+import ejb.session.stateless.DepositAccountSessionBeanRemote;
 import ejb.session.stateless.EmployeeSessionBeanRemote;
 import entity.AtmCard;
 import entity.Customer;
+import entity.DepositAccount;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
+import util.enumeration.DepositAccountType;
 
 /**
  *
@@ -20,11 +26,13 @@ public class MainApp {
     private AtmCardSessionBeanRemote atmCardSB;
     private CustomerSessionBeanRemote customerSB;
     private EmployeeSessionBeanRemote employeeSB;
+    private DepositAccountSessionBeanRemote depositAccountSB;
 
-    public MainApp(AtmCardSessionBeanRemote atmCardSB, CustomerSessionBeanRemote customerSB, EmployeeSessionBeanRemote employeeSB) {
+    public MainApp(AtmCardSessionBeanRemote atmCardSB, CustomerSessionBeanRemote customerSB, EmployeeSessionBeanRemote employeeSB, DepositAccountSessionBeanRemote depositAccountSB) {
         this.atmCardSB = atmCardSB;
         this.customerSB = customerSB;
         this.employeeSB = employeeSB;
+        this.depositAccountSB = depositAccountSB;
     }
     
     public void runApp() {
@@ -59,17 +67,21 @@ public class MainApp {
         System.out.println("*** Teller Terminal :: Create New Staff ***\n");
         System.out.println("To create new customer, please fill in the details below:");
         
+        Customer newCustomer = new Customer();
         System.out.print("Name:");
         String firstName = sc.next();
         String lastName = sc.next();
-        System.out.println();
+        newCustomer.setFirstName(firstName);
+        newCustomer.setLastName(lastName);
         
         sc.nextLine();
         System.out.print("ID number:");
         String idNum = sc.nextLine().trim();
+        newCustomer.setIdentificationNumber(idNum);
         
         System.out.print("Contact Number:");
         String contactNum = sc.nextLine().trim();
+        newCustomer.setContactNumber(contactNum);
         
         System.out.print("Address:");
         String address1 = sc.nextLine().trim();
@@ -82,18 +94,60 @@ public class MainApp {
             address1 = address[0];
             address2 = address[1];
         }
+        newCustomer.setAddressLine1(address1);
+        newCustomer.setAddressLine2(address2);
         
         System.out.print("Postal Code:");
         String postalCode = sc.nextLine().trim();
+        newCustomer.setPostalCode(postalCode);
         
-        Customer newCustomer = new Customer(firstName, lastName, idNum, contactNum, address1, address2, postalCode);
+//        Customer newCustomer = new Customer(firstName, lastName, idNum, contactNum, address1, address2, postalCode);
         Long newCustomerId = customerSB.createNewCustomer(newCustomer);
         System.out.println("New Customer created successfully!: " + newCustomerId + "\n");
     }
     
     private void openDepositAccTerminal() {
-    
+        Scanner sc = new Scanner(System.in);
+        
+        System.out.println("*** Teller Terminal :: Open Deposit Account ***\n");
+        System.out.println("To open a Deposit Account, a customer must be selected.");
+        System.out.print("Enter Customer ID: "); //might need to change to retrieve by name or userName
+        Long customerId = sc.nextLong();
+        Customer customer = customerSB.retrieveCustomerbyId(customerId);
+        sc.nextLine();
+        
+        System.out.println("Enter details of new account to proceed");
+        DepositAccount newAccount = new DepositAccount();
+        
+        //Association
+        
+        //does not work as fetch type is lazy
+        List<DepositAccount> updatedList = customer.getAccounts();
+        updatedList.add(newAccount);
+        customer.setAccounts(updatedList);
+        newAccount.setCustomer(customer);
+        
+        //Set Account Details
+        newAccount.setEnabled(true);
+        newAccount.setAccountType(DepositAccountType.SAVINGS);
+        
+        System.out.print("Account Number: ");
+        String accNum = sc.nextLine();
+        newAccount.setAccountNumber(accNum);
+        
+        System.out.print("Enter Amount that Customer would like to deposit: ");
+        BigDecimal amount = sc.nextBigDecimal();
+        newAccount.setAvailableBalance(amount);
+        newAccount.setHoldBalance(BigDecimal.ZERO);
+        newAccount.setLedgerBalance(amount);
+        sc.nextLine();
+        
+        System.out.print("Kindly collect cash from Customer for deposit.");
+        System.out.print("Press any button to proceed...");
+        sc.nextLine();
     }
+    
+    
     
     private void issueAtmCardTerminal() {
         Scanner sc = new Scanner(System.in);
@@ -105,12 +159,17 @@ public class MainApp {
         Customer customer = customerSB.retrieveCustomerbyId(customerId);
         sc.nextLine();
         
-        if (customer.getAtmCard() == null) {
+        if (customer.getAtmCard() == null) { //When customer has no ATM card
             System.out.println("Customer selected does NOT have an ATM Card!");
             System.out.println("Press any button to proceed to issue a new ATM Card...");
             sc.nextLine();
             //issue new card here
             issueNewAtmCard(customer);
+        } else if (customer.getAccounts().isEmpty()){ //When customer does not have deposit account
+            System.out.println("Customer selected does NOT have a deposit account!");
+            System.out.println("In order to issue an ATM Card, one must have at least one deposit account.");
+            System.out.println("Please inform the customer you are serving to create an account first.");
+            System.out.println("Exiting from Issue ATM....");
         } else {
             System.out.println("Customer selected already has an ATM Card!");
             System.out.println("Would you like to issue a replacement? Y/N");
@@ -131,6 +190,7 @@ public class MainApp {
             2. Associate new Atm Card to Customer and vice versa
             3. Merge entities to update DB
         */
+        
         System.out.println("Enter details of new card to proceed");
         AtmCard newCard = new AtmCard();
         customer.setAtmCard(newCard);
@@ -149,11 +209,25 @@ public class MainApp {
         String pin = sc.nextLine().trim();
         newCard.setPin(pin);
         
-//        customer.setAtmCard(newCard);
-//        newCard.setCustomer(customer);
+        /*
+        Add deposit accounts
+        */
         
-        //atmCardSB.createNewAtmCard(newCard);
+        List<DepositAccount> newListForAtmCard = new ArrayList<DepositAccount>();
+        System.out.println("Select Deposit Account(s) you would like to associate with the new ATM Card: ");
+        for (DepositAccount acc: customer.getAccounts()) {
+            System.out.println("Account is a " + acc.getAccountType().name() + " account. Account Number: " + acc.getAccountNumber());
+            System.out.println("Would you like to link this Account? Y/N");
+            if (sc.nextLine().equalsIgnoreCase("y")) {
+                //add to new list
+                newListForAtmCard.add(acc);
+                acc.setAtmCard(newCard);
+                depositAccountSB.updateDepositAccount(acc);
+            }
+        }
+        newCard.setAccounts(newListForAtmCard);
         customerSB.updateCustomer(customer);
+        System.out.println("Successfully Issued ATM Card!");
     }
     
     private void issueReplacementAtmCard(Customer customer, AtmCard currCard) {
@@ -167,6 +241,7 @@ public class MainApp {
         currCard.setEnabled(false);
         currCard.setCustomer(null);
         atmCardSB.updateAtmCard(currCard);
+        System.out.println("Successfully disabled previous ATM Card!");
         issueNewAtmCard(customer);
     }
 }
