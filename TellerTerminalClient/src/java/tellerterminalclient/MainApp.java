@@ -39,7 +39,7 @@ public class MainApp {
         Scanner sc = new Scanner(System.in);
         
         while (true) {            
-            int response = 0;
+            int response;
             System.out.println("*** Welcome to Teller Terminal!***\n");
             System.out.println("1: Create Customer");
             System.out.println("2: Open Deposit Account");
@@ -69,19 +69,19 @@ public class MainApp {
         
         Customer newCustomer = new Customer();
         System.out.print("Name:");
-        String firstName = sc.next();
-        String lastName = sc.next();
-        newCustomer.setFirstName(firstName);
-        newCustomer.setLastName(lastName);
+//        String firstName = sc.next();
+//        String lastName = sc.next();
+        newCustomer.setFirstName(sc.next());
+        newCustomer.setLastName(sc.next());
         
         sc.nextLine();
         System.out.print("ID number:");
-        String idNum = sc.nextLine().trim();
-        newCustomer.setIdentificationNumber(idNum);
+//        String idNum = sc.nextLine().trim();
+        newCustomer.setIdentificationNumber(sc.nextLine().trim());
         
         System.out.print("Contact Number:");
-        String contactNum = sc.nextLine().trim();
-        newCustomer.setContactNumber(contactNum);
+//        String contactNum = sc.nextLine().trim();
+        newCustomer.setContactNumber(sc.nextLine().trim());
         
         System.out.print("Address:");
         String address1 = sc.nextLine().trim();
@@ -98,10 +98,9 @@ public class MainApp {
         newCustomer.setAddressLine2(address2);
         
         System.out.print("Postal Code:");
-        String postalCode = sc.nextLine().trim();
-        newCustomer.setPostalCode(postalCode);
+//        String postalCode = sc.nextLine().trim();
+        newCustomer.setPostalCode(sc.nextLine().trim());
         
-//        Customer newCustomer = new Customer(firstName, lastName, idNum, contactNum, address1, address2, postalCode);
         Long newCustomerId = customerSB.createNewCustomer(newCustomer);
         System.out.println("New Customer created successfully!: " + newCustomerId + "\n");
     }
