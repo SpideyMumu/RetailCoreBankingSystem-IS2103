@@ -5,6 +5,7 @@
  */
 package ejb.session.stateless;
 
+import entity.AtmCard;
 import entity.Customer;
 import entity.DepositAccount;
 import java.math.BigDecimal;
@@ -42,6 +43,14 @@ public class DepositAccountSessionBean implements DepositAccountSessionBeanRemot
     public List<DepositAccount> retrieveAllDepositAccount(Customer customer) {
         Query query = em.createQuery("SELECT d FROM DepositAccount d WHERE d.customer = :currCustomer");
         query.setParameter("currCustomer", customer);
+        
+        return query.getResultList();
+    }
+    
+    @Override
+    public List<DepositAccount> retrieveAllDepositAccountByAtm(AtmCard atmCard) {
+        Query query = em.createQuery("SELECT d FROM DepositAccount d WHERE d.atmCard = :currCard");
+        query.setParameter("currCard", atmCard);
         
         return query.getResultList();
     }

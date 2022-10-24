@@ -5,6 +5,7 @@
  */
 package ejb.session.stateless;
 
+import entity.AtmCard;
 import entity.Customer;
 import entity.DepositAccount;
 import java.math.BigDecimal;
@@ -25,5 +26,7 @@ public interface DepositAccountSessionBeanRemote {
     public void updateDepositAccount(DepositAccount acc);
 
     public List<DepositAccount> retrieveAllDepositAccount(Customer customer);
+
+    public List<DepositAccount> retrieveAllDepositAccountByAtm(AtmCard atmCard);
     
 }
