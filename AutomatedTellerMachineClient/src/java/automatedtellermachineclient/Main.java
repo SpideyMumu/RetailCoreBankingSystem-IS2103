@@ -5,7 +5,12 @@
  */
 package automatedtellermachineclient;
 
+import ejb.session.stateless.AtmCardSessionBeanRemote;
+import ejb.session.stateless.CustomerSessionBeanRemote;
+import ejb.session.stateless.DepositAccountSessionBeanRemote;
+import ejb.session.stateless.EmployeeSessionBeanRemote;
 import java.util.Scanner;
+import javax.ejb.EJB;
 
 /**
  *
@@ -13,21 +18,22 @@ import java.util.Scanner;
  */
 public class Main {
 
+    @EJB
+    private static DepositAccountSessionBeanRemote depositAccountSessionBean;
+
+    @EJB
+    private static CustomerSessionBeanRemote customerSessionBean;
+
+    @EJB
+    private static AtmCardSessionBeanRemote atmCardSessionBean; 
+    
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
-        Scanner sc = new Scanner(System.in);
         
-        System.out.println("*** Welcome to Automated Teller Machine!***\n");
-        System.out.print("Please Enter your ATM Card Number: ");
-        String cardNumber = sc.nextLine().trim();
-        System.out.print("Please Enter your PIN: ");
-        String pin = sc.nextLine().trim();
-        
-        //Retrieve ATM card entity here
-        
+        MainApp mainApp = new MainApp(customerSessionBean, atmCardSessionBean, depositAccountSessionBean);
+        mainApp.runApp();    
     }
     
 }
