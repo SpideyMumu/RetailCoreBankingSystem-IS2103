@@ -25,4 +25,7 @@ public interface AtmCardSessionBeanLocal {
     
     public AtmCard retrieveAtmCardByCardId(Long cardId);
     
+    public void deleteAtmCard(Long atmCardId);
+
+    
 }

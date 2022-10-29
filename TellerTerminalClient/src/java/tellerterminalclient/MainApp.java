@@ -247,10 +247,25 @@ public class MainApp {
             5. merge entities to update DB
         */
 
-        currCard.setEnabled(false);
-        //currCard.setCustomer(null);
-        atmCardSB.updateAtmCard(currCard);
-        System.out.println("Successfully disabled previous ATM Card!");
+        //dissociate atm card from customer
+        currCard.setCustomer(null);
+        atmCardSB.updateAtmCard(currCard); 
+        
+        //dissosiacte customer from atmCard
+        customer.setAtmCard(null);
+        customerSB.updateCustomer(customer);
+         
+        //dissoaciate deposit accounts
+        List<DepositAccount> currDepositAccounts = depositAccountSB.retrieveAllDepositAccount(customer);
+        
+        for (DepositAccount acc : currDepositAccounts) {
+            acc.setAtmCard(null);
+            depositAccountSB.updateDepositAccount(acc);
+        }
+        
+        //delete ATM card
+        atmCardSB.deleteAtmCard(currCard.getAtmCardId());
+        System.out.println("Successfully deleted previous ATM Card!");
         issueNewAtmCard(customer);
     }
 }

@@ -42,7 +42,7 @@ public class AtmCard implements Serializable {
     private String pin;
 
     @OneToOne
-    @JoinColumn(nullable = false, name = "customerId")
+    @JoinColumn(name = "customerId")
     private Customer customer;
     
     @OneToMany (mappedBy = "atmCard")

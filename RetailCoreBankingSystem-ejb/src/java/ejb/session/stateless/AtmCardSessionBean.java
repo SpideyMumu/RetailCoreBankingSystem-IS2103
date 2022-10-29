@@ -47,6 +47,12 @@ public class AtmCardSessionBean implements AtmCardSessionBeanRemote, AtmCardSess
     }
     
     @Override
+    public void deleteAtmCard(Long atmCardId) {
+        AtmCard card = retrieveAtmCardByCardId(atmCardId);
+        em.remove(card);
+    }
+    
+    @Override
     public AtmCard retrieveAtmCardByCardNumber(String cardNum) {
         Query query = em.createQuery("SELECT c FROM AtmCard c WHERE c.cardNumber = :currCardNum");
         query.setParameter("currCardNum", cardNum);

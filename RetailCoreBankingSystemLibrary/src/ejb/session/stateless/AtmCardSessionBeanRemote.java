@@ -24,5 +24,7 @@ public interface AtmCardSessionBeanRemote {
     public AtmCard retrieveAtmCardByCardNumber(String cardNum);
 
     public AtmCard retrieveAtmCardByCardId(Long cardId);
+
+    public void deleteAtmCard(Long atmCardId);
     
 }
